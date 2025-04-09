@@ -33,7 +33,7 @@ interface randomDogData {
 async function fillEntryData(): Promise<void> {
   // Declare API URL
   const randomDogAPI = 'https://dog.ceo/api/breeds/image/random';
-  const randomTextAPI = 'https://baconipsum.com/api/?type=all-meat&paras=5';
+  const randomTextAPI = 'https://baconipsum.com/api/?type=all-meat&paras=3';
   // Take elements from the forms
   const $title = document.querySelector('#title') as HTMLInputElement;
   const $photoURL = document.querySelector('#photoURL') as HTMLInputElement;
