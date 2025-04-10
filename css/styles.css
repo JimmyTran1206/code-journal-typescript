@@ -111,3 +111,56 @@ button.delete {
 button.delete:hover {
   cursor: pointer;
 }
+
+/* ISSUE#2 */
+span.entries {
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  display: inline-block;
+  margin-left: 2rem;
+  background-color: #ffc107;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+li.entry {
+  list-style-type: none;
+  margin-bottom: 2rem;
+}
+
+ul.entry-list {
+  padding: 0;
+  margin: 0;
+}
+
+a.button-new {
+  font-size: 1.2rem;
+  padding: 0.3rem 0.6rem;
+  background-color: #4a2373;
+  color: white;
+  border: 1.5px solid #4a2373;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+/* Centering the link */
+.row-half-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.row-half-left {
+  margin-right: auto;
+}
+
+p.entry-notes {
+  text-align: justify;
+}
+
+p.no-entry {
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+}
