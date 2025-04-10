@@ -107,6 +107,7 @@ function toggleNoEntries(state: string): void {
   }
 }
 
+// function to swap views, receive argument: entries and entry-form
 function viewSwap(view: string): void {
   const $dataViews = document.querySelectorAll(
     '[data-view]',
@@ -136,3 +137,11 @@ $buttonNew.addEventListener('click', () => {
 });
 
 // ISSUE 3
+const $entryList = document.querySelector('.entry-list');
+if (!$entryList) throw new Error('Unable to query entry-list element');
+$entryList.addEventListener('click', (event: Event) => {
+  const eventTarget = event.target as HTMLElement;
+  if (eventTarget.className === 'fa fa-pencil edit-icon') {
+    viewSwap('entry-form');
+  }
+});

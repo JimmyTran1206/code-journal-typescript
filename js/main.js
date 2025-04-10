@@ -36,6 +36,7 @@ $form.addEventListener('submit', (event) => {
 function renderEntry(entry) {
   const $entryElement = document.createElement('li');
   $entryElement.className = 'entry';
+  $entryElement.setAttribute('data-entry-id', entry.entryId.toString());
   const entryContent = `
             <div class="row">
               <div class="column-half">
@@ -48,6 +49,7 @@ function renderEntry(entry) {
               <div class="column-half">
                 <div class="row">
                   <h3 class="entry-title">${entry.title}</h3>
+                  <i class="fa fa-pencil edit-icon"></i>
                 </div>
 
                 <p class="entry-notes">${entry.notes}
@@ -84,6 +86,7 @@ function toggleNoEntries(state) {
       break;
   }
 }
+// function to swap views, receive argument: entries and entry-form
 function viewSwap(view) {
   const $dataViews = document.querySelectorAll('[data-view]');
   if (!$dataViews) throw new Error('Unable to query data-view elements');
@@ -104,4 +107,13 @@ const $buttonNew = document.querySelector('.button-new');
 if (!$buttonNew) throw new Error('Unable to query button-new element');
 $buttonNew.addEventListener('click', () => {
   viewSwap('entry-form');
+});
+// ISSUE 3
+const $entryList = document.querySelector('.entry-list');
+if (!$entryList) throw new Error('Unable to query entry-list element');
+$entryList.addEventListener('click', (event) => {
+  const eventTarget = event.target;
+  if (eventTarget.className === 'fa fa-pencil edit-icon') {
+    viewSwap('entry-form');
+  }
 });
