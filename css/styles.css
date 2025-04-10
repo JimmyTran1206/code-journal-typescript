@@ -164,3 +164,23 @@ p.no-entry {
   text-align: center;
   font-size: 1.2rem;
 }
+
+/* ISSUE#3 */
+h3.entry-title {
+  width: 90%;
+  display: inline-block;
+}
+
+i.edit-icon {
+  width: 10%;
+  font-size: 1.5rem;
+  padding-top: 3%;
+  padding-left: 0;
+  text-align: right;
+  display: inline-block;
+  color: #4a2373;
+}
+
+i.edit-icon:hover {
+  cursor: pointer;
+}

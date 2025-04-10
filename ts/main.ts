@@ -54,6 +54,7 @@ $form.addEventListener('submit', (event: Event) => {
 function renderEntry(entry: Entry): HTMLLIElement {
   const $entryElement = document.createElement('li');
   $entryElement.className = 'entry';
+  $entryElement.setAttribute('data-entry-id', entry.entryId.toString());
   const entryContent: string = `
             <div class="row">
               <div class="column-half">
@@ -66,6 +67,7 @@ function renderEntry(entry: Entry): HTMLLIElement {
               <div class="column-half">
                 <div class="row">
                   <h3 class="entry-title">${entry.title}</h3>
+                  <i class="fa fa-pencil edit-icon"></i>
                 </div>
 
                 <p class="entry-notes">${entry.notes}
@@ -132,3 +134,5 @@ if (!$buttonNew) throw new Error('Unable to query button-new element');
 $buttonNew.addEventListener('click', () => {
   viewSwap('entry-form');
 });
+
+// ISSUE 3
