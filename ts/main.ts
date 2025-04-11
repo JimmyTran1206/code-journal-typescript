@@ -29,24 +29,52 @@ $photoURL.addEventListener('input', () => {
 
 $form.addEventListener('submit', (event: Event) => {
   event.preventDefault();
-  const entryId = data.nextEntryId++;
-  const title = $formELements.title.value;
-  const photoURL = $formELements.photoURL.value;
-  const notes = $formELements.notes.value;
-  const entry: Entry = { entryId, title, photoURL, notes };
-  data.entries.unshift(entry);
+  if (data.editing === null) {
+    const entryId = data.nextEntryId++;
+    const title = $formELements.title.value;
+    const photoURL = $formELements.photoURL.value;
+    const notes = $formELements.notes.value;
+    const entry: Entry = { entryId, title, photoURL, notes };
+    data.entries.unshift(entry);
+    writeDataToLocalStorage();
+
+    // Update submit event callback function for ISSUE #2
+    const $newEntryItem: HTMLLIElement = renderEntry(entry);
+    const $entryList = document.querySelector('.entry-list');
+    if (!$entryList) throw new Error('Unable to query entry-list element');
+    $entryList.prepend($newEntryItem);
+    viewSwap('entries');
+    toggleNoEntries('off');
+  } else {
+    // Update submit event callback function for ISSUE #3: editing an entry
+    const entryId = data.editing.entryId;
+    const title = $formELements.title.value;
+    const photoURL = $formELements.photoURL.value;
+    const notes = $formELements.notes.value;
+    const editedEntry: Entry = { entryId, title, photoURL, notes };
+    // update new value and write the data
+    data.entries.forEach((entry) => {
+      if (entry.entryId === editedEntry.entryId) {
+        entry.title = editedEntry.title;
+        entry.photoURL = editedEntry.photoURL;
+        entry.notes = editedEntry.notes;
+      }
+    });
+    writeDataToLocalStorage();
+
+    // Render updated entry
+    const $editedEntry = renderEntry(editedEntry);
+    const $oldEntry = document.querySelector(
+      `[data-entry-id="${editedEntry.entryId}"]`,
+    );
+    $oldEntry?.replaceWith($editedEntry);
+    data.editing = null;
+    viewSwap('entries');
+    toggleNoEntries('off');
+  }
+
+  // reset form and set image to blank after all done
   $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
-  writeDataToLocalStorage();
-
-  // Update submit event callback function for ISSUE 2
-  const $newEntryItem: HTMLLIElement = renderEntry(entry);
-  const $entryList = document.querySelector('.entry-list');
-  if (!$entryList) throw new Error('Unable to query entry-list element');
-  $entryList.prepend($newEntryItem);
-  viewSwap('entries');
-  toggleNoEntries('off');
-
-  // reset form after all done
   $form.reset();
 });
 
@@ -134,9 +162,22 @@ const $buttonNew = document.querySelector('.button-new') as HTMLAnchorElement;
 if (!$buttonNew) throw new Error('Unable to query button-new element');
 $buttonNew.addEventListener('click', () => {
   viewSwap('entry-form');
+  setFormTitle('New Entry');
+  // Reset the form, in case the view was previously in edit mode and not saved:
+  $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
+  $form.reset();
 });
 
 // ISSUE 3
+// function to set form title in editing entry/ new entry
+function setFormTitle(title: string): void {
+  const $formTitle = document.querySelector(
+    '.form-title',
+  ) as HTMLHeadingElement;
+  if (!$formTitle) throw new Error('Cannot file form-title element');
+  $formTitle.textContent = title;
+}
+
 const $entryList = document.querySelector('.entry-list');
 if (!$entryList) throw new Error('Unable to query entry-list element');
 $entryList.addEventListener('click', (event: Event) => {
@@ -154,10 +195,6 @@ $entryList.addEventListener('click', (event: Event) => {
     $formELements.photoURL.value = data.editing.photoURL;
     $formELements.notes.value = data.editing.notes;
     $entryImage.setAttribute('src', data.editing.photoURL);
-    const $pageTitle = document.querySelector(
-      '.page-title',
-    ) as HTMLHeadingElement;
-    if (!$pageTitle) throw new Error('Cannot file page-title element');
-    $pageTitle.textContent = 'Edit Entry';
+    setFormTitle('Edit Entry');
   }
 });
