@@ -115,5 +115,17 @@ $entryList.addEventListener('click', (event) => {
   const eventTarget = event.target;
   if (eventTarget.className === 'fa fa-pencil edit-icon') {
     viewSwap('entry-form');
+    const entryId = parseInt(eventTarget.closest('li')?.dataset.entryId ?? '0');
+    const editingEntry = data.entries.filter(
+      (entry) => entry.entryId === entryId,
+    )[0];
+    data.editing = editingEntry;
+    $formELements.title.value = data.editing.title;
+    $formELements.photoURL.value = data.editing.photoURL;
+    $formELements.notes.value = data.editing.notes;
+    $entryImage.setAttribute('src', data.editing.photoURL);
+    const $pageTitle = document.querySelector('.page-title');
+    if (!$pageTitle) throw new Error('Cannot file page-title element');
+    $pageTitle.textContent = 'Edit Entry';
   }
 });
