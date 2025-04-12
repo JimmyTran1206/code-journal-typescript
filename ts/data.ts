@@ -24,7 +24,7 @@ function readDataFromLocalStorage(): Data {
   return dataString ? (JSON.parse(dataString) as Data) : dataDefault;
 }
 
-// Test function, will be removed when completed
+// Test function, auto input dummy data and send `input` event
 interface randomDogData {
   message: string;
 }

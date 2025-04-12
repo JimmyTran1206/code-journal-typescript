@@ -1,4 +1,4 @@
-/* ISSUE#1 */
+/* ISSUE #1 */
 * {
   font-family: sans-serif;
 }
@@ -98,21 +98,7 @@ button.submit:hover {
   width: 75%;
 }
 
-button.delete {
-  font-size: 1rem;
-  background-color: #edebed;
-  color: #eb4f4d;
-  border: none;
-  margin: 2rem 0;
-  padding: 0;
-  text-decoration: underline;
-}
-
-button.delete:hover {
-  cursor: pointer;
-}
-
-/* ISSUE#2 */
+/* ISSUE #2 */
 span.entries {
   color: white;
   font-weight: 600;
@@ -165,7 +151,7 @@ p.no-entry {
   font-size: 1.2rem;
 }
 
-/* ISSUE#3 */
+/* ISSUE #3 */
 h3.entry-title {
   width: 90%;
   display: inline-block;
@@ -182,5 +168,86 @@ i.edit-icon {
 }
 
 i.edit-icon:hover {
+  cursor: pointer;
+}
+
+/* ISSUE #4 */
+button.button-delete {
+  font-size: 1rem;
+  background-color: #edebed;
+  color: #eb4f4d;
+  border: none;
+  margin: 2rem 0;
+  padding: 0;
+  text-decoration: underline;
+}
+
+button.button-delete:hover {
+  cursor: pointer;
+}
+
+dialog {
+  border-color: transparent;
+  border-radius: 10px;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+div.modal-container {
+  width: auto;
+  min-width: 400px;
+  max-width: 500px;
+  min-height: 200px;
+  max-height: 250px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+div.dialog-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+p.confirmation-text {
+  font-size: 1.2rem;
+}
+
+.button-cancel-div {
+  margin-right: auto;
+  margin-left: 5%;
+}
+
+.button-confirm-div {
+  margin-right: 5%;
+}
+
+button.button-cancel,
+button.button-confirm {
+  font-size: 1.5rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  margin: 1.5rem 0;
+}
+
+button.button-cancel {
+  background-color: #cecece;
+  color: black;
+  border: 1.5px solid #cecece;
+}
+
+button.button-confirm {
+  background-color: #eb4f4d;
+  color: white;
+  border: 1.5px solid #eb4f4d;
+}
+
+button.button-cancel:hover,
+button.button-confirm:hover {
   cursor: pointer;
 }

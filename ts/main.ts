@@ -1,4 +1,4 @@
-// ISSUE 1
+// ISSUE #1
 interface FormElements extends HTMLFormControlsCollection {
   title: HTMLInputElement;
   photoURL: HTMLInputElement;
@@ -78,7 +78,7 @@ $form.addEventListener('submit', (event: Event) => {
   $form.reset();
 });
 
-// ISSUE 2
+// ISSUE #2
 function renderEntry(entry: Entry): HTMLLIElement {
   const $entryElement = document.createElement('li');
   $entryElement.className = 'entry';
@@ -118,7 +118,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   // show the previous view before refresh
-  viewSwap(data.view);
+  // Enhance feature after Issue #3: keep the editing mode after refresh
+  if (data.editing === null) {
+    viewSwap(data.view);
+  } else {
+    viewSwap(data.view);
+    $formELements.title.value = data.editing.title;
+    $formELements.photoURL.value = data.editing.photoURL;
+    $formELements.notes.value = data.editing.notes;
+    $entryImage.setAttribute('src', data.editing.photoURL);
+    setFormTitle('Edit Entry');
+    showButtonDelete();
+  }
 });
 
 function toggleNoEntries(state: string): void {
@@ -156,6 +167,7 @@ const $entriesLink = document.querySelector(
 if (!$entriesLink) throw new Error('Unable to query entries element');
 $entriesLink.addEventListener('click', () => {
   viewSwap('entries');
+  data.editing = null; // auto exit editing mode if any
 });
 
 const $buttonNew = document.querySelector('.button-new') as HTMLAnchorElement;
@@ -166,9 +178,11 @@ $buttonNew.addEventListener('click', () => {
   // Reset the form, in case the view was previously in edit mode and not saved:
   $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
   $form.reset();
+  hideButtonDelete();
+  data.editing = null; // avoid circular click sequence entries->edit->entries->new
 });
 
-// ISSUE 3
+// ISSUE #3
 // function to set form title in editing entry/ new entry
 function setFormTitle(title: string): void {
   const $formTitle = document.querySelector(
@@ -196,5 +210,46 @@ $entryList.addEventListener('click', (event: Event) => {
     $formELements.notes.value = data.editing.notes;
     $entryImage.setAttribute('src', data.editing.photoURL);
     setFormTitle('Edit Entry');
+    showButtonDelete();
+    writeDataToLocalStorage(); // enhance feature so that editing mode can be kept after refresh
   }
+});
+
+//  ISSUE #4
+const $dialog = document.querySelector('dialog') as HTMLDialogElement;
+const $buttonDelete = document.querySelector(
+  '.button-delete',
+) as HTMLButtonElement;
+const $buttonCancel = document.querySelector(
+  '.button-cancel',
+) as HTMLButtonElement;
+const $buttonConfirm = document.querySelector('.button-confirm');
+if (!$dialog || !$buttonDelete || !$buttonCancel || !$buttonConfirm)
+  throw new Error('Unable to query dialog model elements');
+$buttonDelete.addEventListener('click', () => $dialog.showModal());
+$buttonCancel.addEventListener('click', () => $dialog.close());
+
+// function to show/hide button delete, because button delete is queried after other code lines
+function showButtonDelete(): void {
+  $buttonDelete.classList.remove('hidden');
+}
+function hideButtonDelete(): void {
+  $buttonDelete.classList.add('hidden');
+}
+
+// remove data in the data array and remove the DOM element upon delete confirmation
+$buttonConfirm.addEventListener('click', () => {
+  // delete the data in data array
+  data.entries = data.entries.filter(
+    (entry) => entry.entryId !== data.editing?.entryId,
+  );
+  // delete the DOM element
+  document
+    .querySelector(`[data-entry-id="${data.editing?.entryId}"]`)
+    ?.remove();
+  // show no entry if needed
+  if (data.entries.length === 0) toggleNoEntries('on');
+  data.editing = null;
+  $dialog.close();
+  viewSwap('entries');
 });
