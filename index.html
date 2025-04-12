@@ -104,7 +104,9 @@
           <div class="row">
             <!-- Button delete -->
             <div class="button-delete-div">
-              <button class="delete hidden">Delete Entry</button>
+              <button type="button" class="button-delete hidden">
+                Delete Entry
+              </button>
             </div>
             <!-- Button save  -->
             <div class="button-submit-div">
@@ -136,6 +138,23 @@
         </ul>
       </div>
     </main>
+
+    <!-- Modal for Issue #4 -->
+    <dialog>
+      <div class="modal-container">
+        <div class="dialog-row">
+          <p class="confirmation-text">Are you sure to delete this entry?</p>
+        </div>
+        <div class="dialog-row">
+          <div class="button-cancel-div">
+            <button class="button-cancel">CANCEL</button>
+          </div>
+          <div class="button-confirm-div">
+            <button class="button-confirm">CONFIRM</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
 
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
